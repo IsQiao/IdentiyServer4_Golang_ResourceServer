@@ -1,1 +1,1 @@
-# IdentiyServer4_Golang_ResourceServer
+# IdentiyServer4_Golang_ResourceServer Sample

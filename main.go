@@ -21,8 +21,14 @@ func main() {
 	mux.Handle("/api/messages", authMiddleWare(http.HandlerFunc(protectedAPIHandler)))
 
 	//cors
-	handler := cors.Default().Handler(mux)
-	http.ListenAndServe(":8000", handler)
+	c := cors.New(cors.Options{
+		AllowedOrigins:   []string{"*"},
+		AllowedHeaders:   []string{"Content-Type", "authorization"},
+		AllowedMethods:   []string{"GET", "POST", "OPTIONS"},
+		AllowCredentials: true,
+	})
+
+	http.ListenAndServe(":8000", c.Handler(mux))
 }
 
 func homeHandler(w http.ResponseWriter, r *http.Request) {

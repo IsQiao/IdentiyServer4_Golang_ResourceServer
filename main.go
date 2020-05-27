@@ -28,6 +28,7 @@ func main() {
 		AllowCredentials: true,
 	})
 
+	fmt.Print("server running")
 	http.ListenAndServe(":8000", c.Handler(mux))
 }
 

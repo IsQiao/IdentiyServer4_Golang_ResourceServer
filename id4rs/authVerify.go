@@ -114,7 +114,7 @@ func (v *AuthVerifier) Verify(jwt string) error {
 
 	IDVerifier := v.provider.Verifier(&oidc.Config{ClientID: v.audience})
 	IDToken, err := IDVerifier.Verify(v.ctx, jwt)
-	if IDToken != nil && err != nil {
+	if IDToken == nil || err != nil {
 		return err
 	}
 	return nil

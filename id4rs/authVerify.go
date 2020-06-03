@@ -109,8 +109,12 @@ func (v *AuthVerifier) Verify(jwt string) error {
 		return fmt.Errorf("the `Issuer` was not able to be validated")
 	}
 
-	var audienceScope []interface{}
 	audience := payload["aud"]
+	if audience == nil {
+		return fmt.Errorf("the `Audience` is null")
+	}
+
+	audienceScope := []interface{}{}
 	kindOfAudience := reflect.TypeOf(audience).Kind()
 
 	switch kindOfAudience {

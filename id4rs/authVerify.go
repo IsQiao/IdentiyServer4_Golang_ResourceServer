@@ -9,6 +9,8 @@ import (
 	"regexp"
 	"strings"
 
+	"reflect"
+
 	oidc "github.com/coreos/go-oidc"
 	"golang.org/x/oauth2"
 )
@@ -107,7 +109,17 @@ func (v *AuthVerifier) Verify(jwt string) error {
 		return fmt.Errorf("the `Issuer` was not able to be validated")
 	}
 
-	audienceScope := payload["aud"].([]interface{})
+	var audienceScope []interface{}
+	audience := payload["aud"]
+	kindOfAudience := reflect.TypeOf(audience).Kind()
+
+	switch kindOfAudience {
+	case reflect.String:
+		audienceScope = []interface{}{audience}
+	case reflect.Slice:
+		audienceScope = audience.([]interface{})
+	}
+
 	if !contains(audienceScope, v.audience) {
 		return fmt.Errorf("the `Audience` was not able to be validated")
 	}
